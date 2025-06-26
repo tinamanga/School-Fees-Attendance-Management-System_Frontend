@@ -9,7 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './pages/AdminDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
 import ParentDashboard from './pages/ParentDashboard';
-import Navbar from './layout/Navbar';
+
 function App() {
   return (
     <Routes>
@@ -33,12 +33,12 @@ function App() {
       {/* Parent-only */}
       <Route element={<ProtectedRoute role="parent" />}>
         <Route path="/parent-dashboard" element={<ParentDashboard />} />
-        <Route path="/students/:id" element={<StudentDetailPage />} />
       </Route>
 
-      {/* Shared Auth Route (optional) */}
+      {/* Shared Authenticated Routes (all roles) */}
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/students/:id" element={<StudentDetailPage />} />
       </Route>
     </Routes>
   );
