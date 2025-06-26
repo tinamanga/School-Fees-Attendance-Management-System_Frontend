@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchStudents } from "../services/api";
 import "../styles/StudentsPage.css";
 
 function StudentsPage() {
@@ -8,14 +7,15 @@ function StudentsPage() {
   const [filtered, setFiltered] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [classroomFilter, setClassroomFilter] = useState("");
+  const [minBalance, setMinBalance] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const url = classroomFilter
-      ? `/students?classroom_id=${classroomFilter}`
-      : "/students";
+    const url = new URL("http://localhost:5000/students");
+    if (classroomFilter) url.searchParams.append("classroom_id", classroomFilter);
+    if (minBalance) url.searchParams.append("min_balance", minBalance);
 
     fetch(url)
       .then((res) => res.json())
@@ -28,7 +28,7 @@ function StudentsPage() {
         setError("Failed to load students.");
         setLoading(false);
       });
-  }, [classroomFilter]);
+  }, [classroomFilter, minBalance]);
 
   useEffect(() => {
     const term = searchTerm.toLowerCase();
@@ -39,6 +39,14 @@ function StudentsPage() {
 
   const handleClick = (id) => {
     navigate(`/students/${id}`);
+  };
+
+  const handleDownloadPDF = () => {
+    if (!classroomFilter) {
+      alert("Please select a class first.");
+      return;
+    }
+    window.open(`http://localhost:5000/reports/classroom/${classroomFilter}/pdf`, "_blank");
   };
 
   if (loading) return <p className="loading">Loading...</p>;
@@ -66,8 +74,22 @@ function StudentsPage() {
           <option value="1">Class 1</option>
           <option value="2">Class 2</option>
           <option value="3">Class 3</option>
-          {/* Add more as needed */}
         </select>
+
+        <select
+          className="classroom-select"
+          value={minBalance}
+          onChange={(e) => setMinBalance(e.target.value)}
+        >
+          <option value="">All Fee Balances</option>
+          <option value="1000">Balance ≥ 1,000</option>
+          <option value="5000">Balance ≥ 5,000</option>
+          <option value="10000">Balance ≥ 10,000</option>
+        </select>
+
+        <button onClick={handleDownloadPDF} className="pdf-btn">
+          Download Class PDF
+        </button>
       </div>
 
       <ul className="student-list">

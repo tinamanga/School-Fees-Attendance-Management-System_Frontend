@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../layout/Navbar";
-import UserForm from '../components/UserForm';
+import UserForm from "../components/UserForm";
 import "../styles/AdminDashboard.css";
 
 export default function AdminDashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedClassroom, setSelectedClassroom] = useState("");
 
   useEffect(() => {
     fetch("/dashboard")
@@ -27,6 +28,12 @@ export default function AdminDashboard() {
       .catch(() => alert("Failed to send alerts."));
   };
 
+  const downloadClassReport = () => {
+    if (!selectedClassroom) return alert("Please select a class first.");
+    const url = `/reports/classroom/${selectedClassroom}/pdf`;
+    window.open(url, "_blank");
+  };
+
   return (
     <>
       <Navbar />
@@ -42,9 +49,27 @@ export default function AdminDashboard() {
             <li>Monitor fee payments and attendance</li>
           </ul>
 
-          <button onClick={sendFeeAlerts} className="alert-btn">
-            Send SMS Fee Alerts
-          </button>
+          <div className="admin-dashboard-actions">
+            <button onClick={sendFeeAlerts} className="alert-btn">
+              Send SMS Fee Alerts
+            </button>
+
+            <select
+              className="classroom-select"
+              value={selectedClassroom}
+              onChange={(e) => setSelectedClassroom(e.target.value)}
+            >
+              <option value="">Select class for PDF report</option>
+              <option value="1">Class 1</option>
+              <option value="2">Class 2</option>
+              <option value="3">Class 3</option>
+              {/* Add more as needed */}
+            </select>
+
+            <button onClick={downloadClassReport} className="pdf-btn">
+              Download Class Report PDF
+            </button>
+          </div>
 
           {loading ? <p>Loading summary...</p> : (
             <div className="summary-cards">
