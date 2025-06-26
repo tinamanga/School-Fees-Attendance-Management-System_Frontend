@@ -1,35 +1,39 @@
 import { useState } from 'react';
 
-function LoginPage() {
-  const [error, setError] = useState(null);
+export default function LoginForm({ onLogin }) {
+  const [values, setValues] = useState({ username: '', password: '' });
 
-  const handleLogin = async (e) => {
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const res = await fetch('http://127.0.0.1:5000/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: e.target.username.value,
-        password: e.target.password.value
-      })
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      alert(`Logged in as ${data.role}`);
-    } else {
-      setError(data.error);
-    }
+    onLogin(values); // Sends username + password to backend
   };
 
   return (
-    <form onSubmit={handleLogin} className="max-w-md mx-auto mt-10 space-y-4">
-      <input name="username" className="border p-2 w-full" placeholder="Username" />
-      <input name="password" type="password" className="border p-2 w-full" placeholder="Password" />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Login</button>
-      {error && <p className="text-red-500">{error}</p>}
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 space-y-4">
+      <input
+        name="username"
+        placeholder="Username"
+        value={values.username}
+        onChange={handleChange}
+        className="border p-2 w-full"
+        required
+      />
+      <input
+        name="password"
+        type="password"
+        placeholder="Password"
+        value={values.password}
+        onChange={handleChange}
+        className="border p-2 w-full"
+        required
+      />
+      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+        Login
+      </button>
     </form>
   );
 }
-
-export default LoginPage;

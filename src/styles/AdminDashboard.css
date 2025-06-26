@@ -1,0 +1,27 @@
+.admin-dashboard {
+    padding: 32px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+  }
+  
+  .dashboard-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+  }
+  
+  .dashboard-info p {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-info ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  
+  .dashboard-info li {
+    margin-bottom: 8px;
+    color: #34495e;
+  }
+  

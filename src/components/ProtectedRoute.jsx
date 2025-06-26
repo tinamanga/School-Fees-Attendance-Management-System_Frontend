@@ -1,16 +1,15 @@
+import { Navigate, Outlet } from 'react-router-dom';
 
+export default function ProtectedRoute({ role }) {
+  const user = JSON.parse(localStorage.getItem('user'));
 
-import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
 
-const ProtectedRoute = ({ role }) => {
-  const { user } = useAuth();
-
-  if (!user) return <Navigate to="/login" />;
-
-  if (role && user.role !== role) return <Navigate to="/dashboard" />;
+  if (role && user.role !== role) {
+    return <Navigate to="/dashboard" />;
+  }
 
   return <Outlet />;
-};
-
-export default ProtectedRoute;
+}
