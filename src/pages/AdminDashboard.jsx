@@ -55,14 +55,12 @@ export default function AdminDashboard() {
       alert(`${data.length} SMS alerts sent.`);
     } catch (error) {
       alert("Failed to send alerts.");
-      console.error(error);
     }
   };
 
   const downloadClassReport = () => {
     if (!selectedClassroom) {
-      alert("Please select a class first.");
-      return;
+      return alert("Please select a class first.");
     }
     const url = `http://127.0.0.1:5000/reports/classroom/${selectedClassroom}/pdf`;
     window.open(url, "_blank");
@@ -76,18 +74,13 @@ export default function AdminDashboard() {
       <Navbar />
       <div style={{ display: "flex" }}>
         <Sidebar />
-        <div
-          className="admin-dashboard-container"
-          style={{ marginLeft: "220px", padding: "20px", flexGrow: 1 }}
-        >
+        <div className="admin-dashboard-container">
           <h1 className="admin-dashboard-title">
             Welcome, {capitalize(user?.role)}
           </h1>
 
           <div className="admin-dashboard-content">
-            <p className="admin-dashboard-description">
-              From this dashboard, you can:
-            </p>
+            <p className="admin-dashboard-description">From this dashboard, you can:</p>
             <ul className="admin-dashboard-list">
               <li>Register new teachers or parents</li>
               <li>Enroll new students</li>
@@ -119,19 +112,20 @@ export default function AdminDashboard() {
             </div>
 
             {loading ? (
-              <p>Loading summary...</p>
+              <p className="loading-text">Loading summary...</p>
             ) : (
               <div className="summary-cards">
                 <div className="card">
-                  Total Students: <strong>{summary?.total_students}</strong>
+                  <h3>Total Students</h3>
+                  <p>{summary?.total_students}</p>
                 </div>
                 <div className="card">
-                  Total Fees Collected:{" "}
-                  <strong>KES {summary?.total_fees_collected}</strong>
+                  <h3>Total Fees Collected</h3>
+                  <p>KES {summary?.total_fees_collected}</p>
                 </div>
                 <div className="card">
-                  Attendance Today:{" "}
-                  <strong>{summary?.attendance_today}%</strong>
+                  <h3>Attendance Today</h3>
+                  <p>{summary?.attendance_today}%</p>
                 </div>
               </div>
             )}

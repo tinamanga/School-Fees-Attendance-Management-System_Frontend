@@ -31,12 +31,12 @@
     border: 1px solid #e0e0e0;
     padding: 1rem;
     border-radius: 8px;
-    background: #fafafa;
+    background: black;
     cursor: pointer;
     transition: background 0.2s;
   }
   
   .student-card:hover {
-    background: #f0f0f0;
+    background:blue;
   }
   
