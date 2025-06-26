@@ -9,37 +9,42 @@ export default function LoginPage() {
 
   const handleLogin = async (values) => {
     setLoading(true);
-    setErrorMsg(null); // Reset error before attempting login
+    setErrorMsg(null);
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/login', {
+      const response = await fetch('http://127.0.0.1:5000/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
         body: JSON.stringify(values),
       });
 
-      const data = await res.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        setErrorMsg(errorData.error || 'Invalid credentials');
+        return;
+      }
 
-      if (res.ok) {
-        localStorage.setItem('user', JSON.stringify(data));
+      const userData = await response.json();
+      localStorage.setItem('user', JSON.stringify(userData));
 
-        switch (data.role) {
-          case 'admin':
-            navigate('/admin-dashboard');
-            break;
-          case 'teacher':
-            navigate('/teacher-dashboard');
-            break;
-          case 'parent':
-            navigate('/parent-dashboard');
-            break;
-          default:
-            navigate('/dashboard');
-        }
-      } else {
-        setErrorMsg(data.error || 'Invalid credentials');
+      switch (userData.role) {
+        case 'admin':
+          navigate('/admin-dashboard');
+          break;
+        case 'teacher':
+          navigate('/teacher-dashboard');
+          break;
+        case 'parent':
+          navigate('/parent-dashboard');
+          break;
+        default:
+          navigate('/dashboard');
       }
     } catch (error) {
+      console.error('Login error:', error);
       setErrorMsg('Network error. Please try again.');
     } finally {
       setLoading(false);

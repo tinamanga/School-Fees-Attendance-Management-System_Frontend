@@ -1,4 +1,4 @@
-// src/pages/AttendancePage.jsx
+
 import React, { useEffect, useState } from "react";
 import "../styles/AttendancePage.css";
 

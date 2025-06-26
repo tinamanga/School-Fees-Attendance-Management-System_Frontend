@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../layout/DashboardLayout";
@@ -8,7 +7,11 @@ function DashboardPage() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role;
-  const [stats, setStats] = useState({ total_students: 0, total_fees_collected: 0 });
+  const [stats, setStats] = useState({
+    total_students: 0,
+    total_fees_collected: 0,
+    attendance_today: 0
+  });
 
   useEffect(() => {
     if (!user) {
@@ -18,11 +21,17 @@ function DashboardPage() {
 
     if (role === "admin") {
       fetch("http://127.0.0.1:5000/dashboard")
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch");
+          return res.json();
+        })
         .then((data) => setStats(data))
-        .catch((err) => console.error("Failed to fetch dashboard stats:", err));
+        .catch((err) => {
+          console.error("Failed to fetch dashboard stats:", err);
+          alert("Failed to load dashboard stats.");
+        });
     }
-  }, [navigate, role]);
+  }, [navigate, role, user]);
 
   const renderDashboard = () => {
     switch (role) {
@@ -41,7 +50,7 @@ function DashboardPage() {
               </div>
               <div className="card">
                 <h2>Attendance Today</h2>
-                <p>98%</p> {/* You can fetch real attendance later */}
+                <p>{stats.attendance_today}%</p>
               </div>
             </div>
           </>

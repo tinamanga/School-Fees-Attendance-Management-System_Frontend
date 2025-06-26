@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../styles/FeesPage.css"; // <-- Import CSS here
+import "../styles/FeesPage.css";
 
 function FeesPage() {
   const [fees, setFees] = useState([]);
@@ -19,7 +19,9 @@ function FeesPage() {
 
   const fetchFees = async () => {
     try {
-      const res = await fetch("/fees");
+      const res = await fetch("http://127.0.0.1:5000/fees", {
+        credentials: "include",
+      });
       if (!res.ok) throw new Error("Failed to fetch fees");
       const data = await res.json();
       setFees(data);
@@ -38,11 +40,12 @@ function FeesPage() {
     setSuccess("");
 
     try {
-      const res = await fetch("/fees", {
+      const res = await fetch("http://127.0.0.1:5000/fees", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify(form)
       });
 

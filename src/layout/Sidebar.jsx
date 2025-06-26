@@ -1,18 +1,19 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import "../styles/Layout.css";
 
-function Sidebar() {
+import React from "react";
+import { Link } from "react-router-dom";
+import "../styles/Sidebar.css";
+
+export default function Sidebar() {
   return (
-    <aside className="sidebar">
-      <nav>
-        <NavLink to="/dashboard" className="nav-link">Dashboard</NavLink>
-        <NavLink to="/students" className="nav-link">Students</NavLink>
-        <NavLink to="/attendance" className="nav-link">Attendance</NavLink>
-        <NavLink to="/fees" className="nav-link">Fees</NavLink>
-      </nav>
-    </aside>
+    <div className="sidebar">
+      <h2 className="sidebar-title">Admin Panel</h2>
+      <ul>
+        <li><Link to="/admin-dashboard">Dashboard</Link></li>
+        <li><Link to="/students">Students</Link></li>
+        <li><Link to="/teachers">Teachers</Link></li>
+        <li><Link to="/attendance">Attendance</Link></li>
+        <li><Link to="/fees">Fees</Link></li>
+      </ul>
+    </div>
   );
 }
-
-export default Sidebar;

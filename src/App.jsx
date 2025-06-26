@@ -26,7 +26,7 @@ function App() {
 
       {/* Teacher-only Routes */}
       <Route element={<ProtectedRoute role="teacher" />}>
-        <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+        <Route path="/teachers" element={<TeacherDashboard />} />
         <Route path="/attendance" element={<AttendancePage />} />
       </Route>
 
