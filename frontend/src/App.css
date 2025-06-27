@@ -1,14 +1,14 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 
 html, body {
   height: 100%;
   width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
   font-family: Arial, sans-serif;
 }
+
 header {
   text-align: center;
   padding: 1.5rem;
@@ -18,7 +18,10 @@ header {
   margin-bottom: 2rem;
 }
 .login-page {
-  height: 100vh;
+  position: fixed; /* Add this */
+  top: 0;
+  left: 0;
+  height: 100%;
   width: 100%;
   background-image: url('https://images.pexels.com/photos/207692/pexels-photo-207692.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
   background-position: center;
