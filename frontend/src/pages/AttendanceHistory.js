@@ -26,20 +26,22 @@ function AttendanceHistory() {
     }
 
     return (
-        <div style={{ maxWidth: 800, margin: "auto" }}>
+        <div className="student-dashboard">
             <h2>Attendance History</h2>
-            {records.map(({ student, records }) => (
-                <div key={student} style={{ marginBottom: 20 }}>
-                    <h4>{student}</h4>
-                    <ul>
-                        {records.map((r) => (
-                            <li key={r.id}>
-                                {r.date} - {r.status} (by {r.teacher.username})
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ))}
+            <div className="dashboard-summary">
+                {records.map(({ student, records }) => (
+                    <div key={student} style={{ marginBottom: "20px" }}>
+                        <h4>{student}</h4>
+                        <ul>
+                            {records.map((r) => (
+                                <li key={r.id}>
+                                    {r.date} - {r.status} (by {r.teacher.username})
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

@@ -18,37 +18,39 @@ function Payments() {
     }
 
     return (
-        <div style={{ maxWidth: 800, margin: "auto" }}>
+        <div className="student-dashboard">
             <h2>All Fee Payment Records</h2>
 
             {payments.length === 0 ? (
                 <p>No payments recorded yet.</p>
             ) : (
-                <table border="1" cellPadding="6">
-                    <thead>
-                        <tr>
-                            <th>Student Name</th>
-                            <th>Amount (KES)</th>
-                            <th>Term</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {payments.map((p) => {
-                            const dt = new Date(p.payment_date);
-                            return (
-                                <tr key={p.id}>
-                                    <td>{p.student_name}</td>
-                                    <td>{p.amount}</td>
-                                    <td>{p.term}</td>
-                                    <td>{dt.toLocaleDateString()}</td>
-                                    <td>{dt.toLocaleTimeString()}</td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                <div className="dashboard-summary">
+                    <table border="1" cellPadding="6">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Amount (KES)</th>
+                                <th>Term</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {payments.map((p) => {
+                                const dt = new Date(p.payment_date);
+                                return (
+                                    <tr key={p.id}>
+                                        <td>{p.student_name}</td>
+                                        <td>{p.amount}</td>
+                                        <td>{p.term}</td>
+                                        <td>{dt.toLocaleDateString()}</td>
+                                        <td>{dt.toLocaleTimeString()}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             )}
         </div>
     );

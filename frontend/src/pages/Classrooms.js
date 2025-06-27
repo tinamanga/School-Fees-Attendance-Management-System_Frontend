@@ -61,10 +61,11 @@ function Classrooms() {
     }
 
     return (
-        <div style={{ maxWidth: 600, margin: "auto" }}>
+        <div className="student-dashboard">
             <h2>Manage Classrooms</h2>
 
             <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
+                <h3>{editingId ? "Edit Classroom" : "Add New Classroom"}</h3>
                 <input
                     type="text"
                     value={name}
@@ -83,27 +84,18 @@ function Classrooms() {
             </form>
 
             <h3>Existing Classrooms</h3>
-            <table border="1" cellPadding="6">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Students</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {classrooms.map((c) => (
-                        <tr key={c.id}>
-                            <td>{c.name}</td>
-                            <td>{c.student_count}</td>
-                            <td>
-                                <button onClick={() => handleEdit(c)}>Edit</button>{" "}
-                                <button onClick={() => handleDelete(c.id)}>Delete</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div className="dashboard-summary">
+                {classrooms.map((c) => (
+                    <div key={c.id} className="dashboard-card">
+                        <h4>{c.name}</h4>
+                        <p><strong>Students:</strong> {c.student_count}</p>
+                        <div>
+                            <button onClick={() => handleEdit(c)}>Edit</button>{" "}
+                            <button onClick={() => handleDelete(c.id)}>Delete</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

@@ -10,6 +10,7 @@ import Payments from "./pages/Payments";
 import Classrooms from "./pages/Classrooms";
 import AttendanceHistory from "./pages/AttendanceHistory";
 
+import "./App.css";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -26,83 +27,94 @@ function App() {
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
-        <div>
-          <h1>School Fees & Attendance System</h1>
-          <nav>
-            <a href="/dashboard">Dashboard</a> |{" "}
-            <a href="/students">Students</a> |{" "}
-            <a href="/classrooms">Classrooms</a> |{" "}
-            <a href="/attendance">Attendance</a> |{" "}
-            <a href="/payments">Payments</a> |{" "}
-            <a href="/attendance-history">History</a> |{" "}
-            <a href="/login">Logout</a>
-          </nav>
+        <div className={`app-container ${!user ? "login-mode" : ""}`}>
+          {user && (
+            <aside className="sidebar">
+              <h2 className="school-title">MACMILLAN SCHOOL</h2>
+              <nav className="sidebar-nav">
+                <ul>
+                  <li><a href="/dashboard">Dashboard</a></li>
+                  {user.role === "admin" && <li><a href="/students">Students</a></li>}
+                  {user.role === "admin" && <li><a href="/classrooms">Classrooms</a></li>}
+                  {user.role === "teacher" && <li><a href="/attendance">Attendance</a></li>}
+                  {user.role === "admin" && <li><a href="/payments">Payments</a></li>}
+                  {(user.role === "admin" || user.role === "teacher") && (
+                    <li><a href="/attendance-history">History</a></li>
+                  )}
+                  <li>
+                    <button
+                      className="logout-btn"
+                      onClick={() => {
+                        setUser(null);
+                        localStorage.removeItem("user");
+                        window.location.href = "/login";
+                      }}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </aside>
+          )}
 
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-
-            {/* 🔒 Admin only */}
-            <Route
-              path="/students"
-              element={
-                user && user.role === "admin" ? (
-                  <Students />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-
-            {/* 🔒 Admin only */}
-            <Route
-              path="/classrooms"
-              element={
-                user && user.role === "admin" ? (
-                  <Classrooms />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-
-            {/* 🔒 Teacher only */}
-            <Route
-              path="/attendance"
-              element={
-                user && user.role === "teacher" ? (
-                  <Attendance />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-
-            {/* 🔒 Admin only */}
-            <Route
-              path="/payments"
-              element={
-                user && user.role === "admin" ? (
-                  <Payments />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-
-            <Route
-              path="/attendance-history"
-              element={
-                user && (user.role === "admin" || user.role === "teacher") ? (
-                  <AttendanceHistory />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-
-
-          </Routes>
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route
+                path="/students"
+                element={
+                  user && user.role === "admin" ? (
+                    <Students />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+              <Route
+                path="/classrooms"
+                element={
+                  user && user.role === "admin" ? (
+                    <Classrooms />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+              <Route
+                path="/attendance"
+                element={
+                  user && user.role === "teacher" ? (
+                    <Attendance />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+              <Route
+                path="/payments"
+                element={
+                  user && user.role === "admin" ? (
+                    <Payments />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+              <Route
+                path="/attendance-history"
+                element={
+                  user && (user.role === "admin" || user.role === "teacher") ? (
+                    <AttendanceHistory />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+            </Routes>
+          </main>
         </div>
       </Router>
     </UserContext.Provider>

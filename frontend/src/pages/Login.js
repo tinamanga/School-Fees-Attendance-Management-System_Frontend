@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import UserContext from "../UserContext";
+import "../App.css";
 
 function Login() {
     const { user, setUser } = useContext(UserContext);
@@ -7,7 +8,7 @@ function Login() {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
-        role: "admin", // default role
+        role: "admin",
     });
 
     const [error, setError] = useState("");
@@ -56,39 +57,44 @@ function Login() {
     };
 
     return (
-        <div style={{ maxWidth: 400, margin: "auto" }}>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Role:
-                    <select name="role" value={formData.role} onChange={handleChange} required>
-                        <option value="admin">Admin</option>
-                        <option value="teacher">Teacher</option>
-                        <option value="student">Student</option>
-                    </select>
-                </label>
-                <br />
-                <label>
-                    Username:
-                    <input name="username" value={formData.username} onChange={handleChange} required />
-                </label>
-                <br />
-                <label>
-                    Password:
-                    <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-                </label>
-                <br />
-                <button type="submit">Login</button>
-                {error && <p style={{ color: "red" }}>{error}</p>}
-            </form>
+        <div className="login-page">
+            <div className="login-header">
+                <h1>Macmillan School</h1>
+                <p>Dream__ Believe __  Achieve</p>
+            </div>
 
-            {user && (
-                <div>
+            <div className="login-card">
+                <h2>Login</h2>
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        Role:
+                        <select name="role" value={formData.role} onChange={handleChange} required>
+                            <option value="admin">Admin</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="student">Student</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Username:
+                        <input name="username" value={formData.username} onChange={handleChange} required />
+                    </label>
+
+                    <label>
+                        Password:
+                        <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+                    </label>
+
+                    <button type="submit">Login</button>
+                    {error && <p className="error">{error}</p>}
+                </form>
+
+                {user && (
                     <p>
                         Logged in as: <strong>{user.username}</strong> ({user.role})
                     </p>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }
