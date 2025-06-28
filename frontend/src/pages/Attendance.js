@@ -59,44 +59,56 @@ function Attendance() {
     }
 
     return (
-        <div style={{ maxWidth: "1000px", margin: "auto" }}>
-            <h2>Attendance (Weekly)</h2>
-            <table border="1" cellPadding="6">
-                <thead>
-                    <tr>
-                        <th>Student</th>
-                        {days.map((d) => (
-                            <th key={d}>{d}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {students.map((s) => (
-                        <tr key={s.id}>
-                            <td>{s.name}</td>
+        <div className="student-dashboard">
+            <h2>Weekly Attendance</h2>
+
+            <div className="dashboard-cards" style={{ flexDirection: "column" }}>
+                {students.map((s) => (
+                    <div key={s.id} className="card" style={{ paddingBottom: 15 }}>
+                        <h4>{s.name}</h4>
+                        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                             {days.map((d) => (
-                                <td key={d}>
+                                <div key={d} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                                    <label style={{ fontWeight: "bold", color: "#555" }}>{d}</label>
                                     <select
+                                        style={{
+                                            padding: "6px",
+                                            borderRadius: "6px",
+                                            border: "1px solid #ccc",
+                                            minWidth: "100px",
+                                            marginTop: "5px"
+                                        }}
                                         value={attendanceData[s.id]?.[d] || ""}
-                                        onChange={(e) =>
-                                            handleStatusChange(s.id, d, e.target.value)
-                                        }
+                                        onChange={(e) => handleStatusChange(s.id, d, e.target.value)}
                                     >
                                         <option value="">--</option>
                                         <option value="Present">Present</option>
                                         <option value="Absent">Absent</option>
                                     </select>
-                                </td>
+                                </div>
                             ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <br />
-            <button onClick={handleSubmit}>Submit Attendance</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <button
+                onClick={handleSubmit}
+                style={{
+                    marginTop: 20,
+                    padding: "10px 20px",
+                    backgroundColor: "#194279",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontWeight: "bold"
+                }}
+            >
+                Submit Attendance
+            </button>
         </div>
     );
 }
 
 export default Attendance;
-

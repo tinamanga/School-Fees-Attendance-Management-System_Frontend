@@ -257,7 +257,7 @@ header {
 .main-content {
   flex: 1;
   padding: 30px;
-  background-color: #f9f9f9;
+  background-color: #d3d2d2;
 }
 
 /* Hide sidebar if user not logged in */
@@ -421,14 +421,14 @@ header {
 
 .student-dashboard input,
 .student-dashboard select {
-  width: 100%;
-  padding: 10px 14px;
+  padding: 8px 10px;
+  border-radius: 6px;
   border: 1px solid #ccc;
-  border-radius: 8px;
   font-size: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  background-color: #fefefe;
+  width: 100%;
+  box-sizing: border-box;
 }
+
 
 .student-dashboard input:focus,
 .student-dashboard select:focus {
@@ -451,3 +451,39 @@ header {
 .student-dashboard button:hover {
   background-color: #357ab7;
 }
+
+/* attendance history  */
+.scroll-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.student-card {
+  background-color: #fefefe;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+  animation: fadeInUp 0.4s ease;
+  transition: transform 0.3s ease;
+}
+
+.student-card:hover {
+  transform: translateY(-4px);
+}
+
+.student-card h4 {
+  color: #0a446e;
+  margin-bottom: 10px;
+}
+
+.student-card p,
+.student-card li {
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: #333;
+}
+/* teacher dash */
