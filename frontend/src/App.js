@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserContext from "./UserContext";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
