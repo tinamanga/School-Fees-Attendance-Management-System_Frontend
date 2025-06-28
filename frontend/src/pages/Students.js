@@ -167,33 +167,23 @@ function Students() {
             {students.length === 0 ? (
                 <p>No students found.</p>
             ) : (
-                <div className="dashboard-summary">
-                    <table border="1" cellPadding="6">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Guardian</th>
-                                <th>Contact</th>
-                                <th>Classroom</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {students.map((s) => (
-                                <tr key={s.id}>
-                                    <td>{s.name}</td>
-                                    <td>{s.guardian_name}</td>
-                                    <td>{s.guardian_contact}</td>
-                                    <td>{s.classroom.name}</td>
-                                    <td>
-                                        <button onClick={() => handleEdit(s)}>Edit</button>{" "}
-                                        <button onClick={() => handleDelete(s.id)}>Delete</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                <div className="student-card-list">
+  {students.map((s) => (
+    <div className="student-card" key={s.id}>
+      <div className="student-info">
+        <h4>{s.name}</h4>
+        <p><strong>Guardian:</strong> {s.guardian_name}</p>
+        <p><strong>Contact:</strong> {s.guardian_contact}</p>
+        <p><strong>Classroom:</strong> {s.classroom.name}</p>
+      </div>
+      <div className="student-actions">
+        <button onClick={() => handleEdit(s)} className="edit-btn">Edit</button>
+        <button onClick={() => handleDelete(s.id)} className="delete-btn">Delete</button>
+      </div>
+    </div>
+  ))}
+</div>
+
             )}
         </div>
     );
