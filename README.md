@@ -1,146 +1,146 @@
-✅ Frontend User Instructions
-🧑‍🎓 STUDENT
-Login:
+## School Fees Attendance Management System – Frontend
 
-Use the credentials assigned by the admin (username, default password: student123).
+  #### User Instructions
 
-You will be redirected to the Student Dashboard.
+   1. Student Login:
+   Use the credentials assigned by the admin
 
-Dashboard View Includes:
+   Default password: student123
 
-Personal info (name, classroom).
+   - After login, you’ll be redirected to the Student Dashboard.
 
-Fee Installments Table: Each fee payment listed with amount, date, and term.
+##### Dashboard View Includes:
+- Personal info (name, classroom)
 
-Attendance Table: View attendance history showing dates and status ("Present"/"Absent").
+- Fee Installments Table
 
-Functionalities:
+- Lists each fee payment with:
 
-✅ View all past fee payments.
+- Amount
 
-✅ View attendance history.
+- Date
 
-🚫 Cannot edit any data or access other parts of the system.
+- Term
 
+- Attendance Table
 
-🧑‍🏫 TEACHER
-Login:
+- Displays attendance history with:
 
+- Date
 
-Use your teacher credentials.
+- Status: "Present" or "Absent"
 
-Redirected to the Teacher Dashboard.
+##### Functionalities:
+- View all past fee payments
 
-Dashboard View Includes:
+- View attendance history
 
-Attendance stats: Total records submitted.
+Note: Cannot edit data or access other parts of the system
 
-List of students whose attendance has been marked by this teacher.
+2. Teacher Login
+   - Use your teacher credentials
 
-Functionalities:
+   - Redirects to the Teacher Dashboard
 
-Submit Attendance:
+##### Dashboard View Includes:
+   - Attendance stats: Total records submitted
 
-Navigate to the Attendance page.
+   - List of students with marked attendance
 
-Weekly table layout (Mon–Fri).
+##### Functionalities:
+   - Submit Attendance
 
-Mark Present/Absent per student per day.
+   - Go to the Attendance page
 
-Submit bulk weekly records to backend.
+   - Mark Present/Absent for each student, Mon–Fri
 
-View Attendance History:
+   - Submit weekly records in bulk
 
-Navigate to Attendance History.
+   - View Attendance History
 
-See submitted attendance grouped by date and student.
+   - Go to the Attendance History page
 
-Note:
+   - View past submissions grouped by:
 
-Teachers can only interact with attendance-related features.
+   - Date
 
-They cannot add/edit students, classrooms, or payments.
+   - Student
 
+##### Limitations:
+ - Teachers can only interact with attendance
 
-👨‍💼 ADMIN
-Login:
+ - Cannot add/edit students, classrooms, or payments
 
+3.  Admin Login
+   - Use your admin credentials
 
-Use your admin credentials.
+   - Redirects to the Admin Dashboard
 
-Redirected to the Admin Dashboard.
+##### Dashboard View Includes:
+   - Total Students
 
-Dashboard View Includes:
+   - Total Fee Collected
 
-Total Students
+    - Total Attendance Records 
 
-Total Fee Collected
+##### Functionalities:
+- Students Management
+- Add, edit, delete students
 
-Total Attendance Records Logged
+- Assign students to classrooms
 
-Functionalities:
+- Auto-generates student login with default password
 
-Students Management
+- Classrooms Management
+- Add, rename, delete classrooms
 
-Add, edit, or delete students.
+Note: Only Admins can access this section
 
-Assign students to classrooms.
+##### Fee Payments
+ - View all fee records
 
-Automatically creates a student login with a default password.
+ - Add new payment per student
 
-Classrooms Management
+ - Filter or view by academic term
 
-Add, rename, or delete classrooms.
+##### Attendance History
+- View all attendance logs submitted by teachers
 
-Only Admins have access to this functionality.
+## Project Setup Instructions (For New Developers)
+1. Clone the Repository
+```bash
+    git clone https://github.com/School-Fees-Attendance-Management-System_Frontend.
 
-Fee Payments
+    cd School-Fees-Attendance-Management-System_Frontend/frontend
+```
+2. Install Dependencies
+```bash
+    npm install
+```
+3. Start the React Frontend
+```bash
+    npm run dev
+```
+   - App will run on:
+    http://localhost:5174
 
-View all payments.
+   -  Make sure your Flask backend is running at:
+    http://localhost:5000
 
-Add new payments per student.
+4. Configurations
+    - Routing: React Router DOM v6+
 
-Filter or view payments per term.
+    - API Calls: Handled using the native fetch() API
 
-Attendance History
+5. Test Login Credentials
 
-View attendance logs submitted by all teachers.
+    | Role    | Username   | Password     |
+| ------- | ---------- | ------------ |
+| Student | `student1` | `student123` |
+| Teacher | `teacher1` | `teacher123` |
+| Admin   | `admin`    | `admin123`   |
 
 
-
-Project Setup Instructions (For New Developers)
-
-git clone https://github.com/School-Fees-Attendance-Management-System_Frontend.git
-cd School-Fees-Attendance-Management-System_Frontend/frontend
-
-
-Install Dependencies
-
-npm install
-
-
-Start the React Frontend
-
-npm start
-
-This will start the app on: http://localhost:3000
-
-
-Ensure your Flask backend is also running at http://localhost:5000
-
-
-
-Configurations
-
-React Router DOM v6+ is used for routing.
-Fetch is used for API requests.
-
-
-
-Test frontend login as:
-
-student1 → password: student123
-
-teacher1 → password: teacher123
-
-admin → password: admin123
+### Netlify  Website URL
+ copy the url below and open it on your browser:
+ - venerable-bienenstitch-f6efef.netlify.app
