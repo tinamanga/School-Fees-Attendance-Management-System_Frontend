@@ -15,8 +15,6 @@ function Login() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  localStorage.removeItem("user");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -35,12 +33,9 @@ function Login() {
       const data = await res.json();
 
       if (res.ok) {
-        // if (data.user.role !== formData.role) {
-        //   setError(`This user is not registered as a ${formData.role}`);
-        //   return;
-        // }
-
-        setUser(data.user);
+        // Store JWT token in localStorage
+        localStorage.setItem("token", data.access_token);
+        setUser({ username: data.access_token, role: data.role });
         window.location.href = "/dashboard";
       } else {
         setError(data.error || "Login failed");
@@ -67,23 +62,6 @@ function Login() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Role
-            </label>
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary"
-            >
-              <option value="admin">Admin</option>
-              <option value="teacher">Teacher</option>
-              <option value="student">Student</option>
-            </select>
-          </div> */}
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Username

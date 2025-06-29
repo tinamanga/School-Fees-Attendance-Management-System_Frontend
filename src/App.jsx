@@ -1,4 +1,3 @@
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,6 +15,7 @@ import Attendance from "./pages/Attendance";
 import Payments from "./pages/Payments";
 import Classrooms from "./pages/Classrooms";
 import AttendanceHistory from "./pages/AttendanceHistory";
+import StudentReport from "./components/StudentReport";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -51,6 +51,7 @@ function App() {
                   </DashboardLayout>
                 }
               />
+
               <Route
                 path="/students"
                 element={
@@ -63,6 +64,7 @@ function App() {
                   )
                 }
               />
+
               <Route
                 path="/classrooms"
                 element={
@@ -75,6 +77,7 @@ function App() {
                   )
                 }
               />
+
               <Route
                 path="/payments"
                 element={
@@ -87,6 +90,7 @@ function App() {
                   )
                 }
               />
+
               <Route
                 path="/attendance"
                 element={
@@ -99,12 +103,26 @@ function App() {
                   )
                 }
               />
+
               <Route
                 path="/attendance-history"
                 element={
                   user.role === "admin" || user.role === "teacher" ? (
                     <DashboardLayout>
                       <AttendanceHistory />
+                    </DashboardLayout>
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+
+              <Route
+                path="/student-report"
+                element={
+                  user.role === "admin" ? (
+                    <DashboardLayout>
+                      <StudentReport />
                     </DashboardLayout>
                   ) : (
                     <Navigate to="/login" />

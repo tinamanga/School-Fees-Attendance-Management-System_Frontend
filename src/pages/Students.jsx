@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from "../UserContext";
 
 function Students() {
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [students, setStudents] = useState([]);
   const [classrooms, setClassrooms] = useState([]);
   const [form, setForm] = useState({
@@ -17,15 +17,35 @@ function Students() {
 
   useEffect(() => {
     if (user?.role === "admin") {
-      fetch("http://localhost:5000/students")
-        .then((res) => res.json())
+      fetch("http://localhost:5000/students", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+        .then((res) => {
+          if (res.status === 401) {
+            logout();
+            return [];
+          }
+          return res.json();
+        })
         .then(setStudents);
 
-      fetch("http://localhost:5000/classrooms")
-        .then((res) => res.json())
+      fetch("http://localhost:5000/classrooms", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+        .then((res) => {
+          if (res.status === 401) {
+            logout();
+            return [];
+          }
+          return res.json();
+        })
         .then(setClassrooms);
     }
-  }, [user]);
+  }, [user, logout]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,9 +64,17 @@ function Students() {
 
     const res = await fetch(url, {
       method,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
       body: JSON.stringify(form),
     });
+
+    if (res.status === 401) {
+      logout();
+      return;
+    }
 
     const data = await res.json();
 
@@ -55,9 +83,11 @@ function Students() {
       return;
     }
 
-    const updated = await fetch("http://localhost:5000/students").then((r) =>
-      r.json()
-    );
+    const updated = await fetch("http://localhost:5000/students", {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }).then((r) => r.json());
     setStudents(updated);
 
     setForm({
@@ -90,9 +120,17 @@ function Students() {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this student?")) return;
 
-    await fetch(`http://localhost:5000/students/${id}`, {
+    const res = await fetch(`http://localhost:5000/students/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
     });
+
+    if (res.status === 401) {
+      logout();
+      return;
+    }
 
     setStudents((prev) => prev.filter((s) => s.id !== id));
   };
