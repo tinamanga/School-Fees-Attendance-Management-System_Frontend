@@ -1,16 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../UserContext";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 function Students() {
   const { user, logout } = useContext(UserContext);
   const [students, setStudents] = useState([]);
   const [classrooms, setClassrooms] = useState([]);
-  const [form, setForm] = useState({
-    name: "",
-    guardian_name: "",
-    guardian_contact: "",
-    classroom_id: "",
-  });
   const [editingId, setEditingId] = useState(null);
   const [error, setError] = useState("");
   const [createdCredentials, setCreatedCredentials] = useState(null);
@@ -47,13 +43,16 @@ function Students() {
     }
   }, [user, logout]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    guardian_name: Yup.string().required("Guardian name is required"),
+    guardian_contact: Yup.string()
+      .matches(/^07\d{8}$/, "Invalid Kenyan phone number")
+      .required("Guardian contact is required"),
+    classroom_id: Yup.string().required("Classroom is required"),
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values, { resetForm }) => {
     setError("");
     setCreatedCredentials(null);
 
@@ -68,7 +67,7 @@ function Students() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
       },
-      body: JSON.stringify(form),
+      body: JSON.stringify(values),
     });
 
     if (res.status === 401) {
@@ -89,13 +88,7 @@ function Students() {
       },
     }).then((r) => r.json());
     setStudents(updated);
-
-    setForm({
-      name: "",
-      guardian_name: "",
-      guardian_contact: "",
-      classroom_id: "",
-    });
+    resetForm();
     setEditingId(null);
 
     if (!editingId && data.login_username) {
@@ -107,14 +100,7 @@ function Students() {
   };
 
   const handleEdit = (student) => {
-    setForm({
-      name: student.name,
-      guardian_name: student.guardian_name,
-      guardian_contact: student.guardian_contact,
-      classroom_id: student.classroom.id,
-    });
     setEditingId(student.id);
-    setCreatedCredentials(null);
   };
 
   const handleDelete = async (id) => {
@@ -149,73 +135,91 @@ function Students() {
 
       {/* Form */}
       <div className="bg-white p-6 rounded-xl shadow">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <h3 className="text-xl font-semibold">
-            {editingId ? "Edit Student" : "Add New Student"}
-          </h3>
+        <Formik
+          initialValues={{
+            name: "",
+            guardian_name: "",
+            guardian_contact: "",
+            classroom_id: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+          enableReinitialize
+        >
+          {({ values, handleChange }) => (
+            <Form className="space-y-4">
+              <h3 className="text-xl font-semibold">
+                {editingId ? "Edit Student" : "Add New Student"}
+              </h3>
 
-          <input
-            name="name"
-            placeholder="Student Name"
-            value={form.name}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded p-2"
-          />
+              <Field
+                name="name"
+                placeholder="Student Name"
+                className="w-full border border-gray-300 rounded p-2"
+              />
+              <ErrorMessage name="name" component="div" className="text-red-500" />
 
-          <input
-            name="guardian_name"
-            placeholder="Guardian Name"
-            value={form.guardian_name}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded p-2"
-          />
+              <Field
+                name="guardian_name"
+                placeholder="Guardian Name"
+                className="w-full border border-gray-300 rounded p-2"
+              />
+              <ErrorMessage
+                name="guardian_name"
+                component="div"
+                className="text-red-500"
+              />
 
-          <input
-            name="guardian_contact"
-            placeholder="Guardian Contact"
-            value={form.guardian_contact}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded p-2"
-          />
+              <Field
+                name="guardian_contact"
+                placeholder="Guardian Contact"
+                className="w-full border border-gray-300 rounded p-2"
+              />
+              <ErrorMessage
+                name="guardian_contact"
+                component="div"
+                className="text-red-500"
+              />
 
-          <select
-            name="classroom_id"
-            value={form.classroom_id}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded p-2"
-          >
-            <option value="">-- Select Classroom --</option>
-            {classrooms.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-
-          <div className="flex gap-2">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            >
-              {editingId ? "Update" : "Add"} Student
-            </button>
-            {editingId && (
-              <button
-                type="button"
-                onClick={() => setEditingId(null)}
-                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+              <Field
+                as="select"
+                name="classroom_id"
+                className="w-full border border-gray-300 rounded p-2"
               >
-                Cancel
-              </button>
-            )}
-          </div>
+                <option value="">-- Select Classroom --</option>
+                {classrooms.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </Field>
+              <ErrorMessage
+                name="classroom_id"
+                component="div"
+                className="text-red-500"
+              />
 
-          {error && <p className="text-red-500">{error}</p>}
-        </form>
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  {editingId ? "Update" : "Add"} Student
+                </button>
+                {editingId && (
+                  <button
+                    type="button"
+                    onClick={() => setEditingId(null)}
+                    className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+              {error && <p className="text-red-500">{error}</p>}
+            </Form>
+          )}
+        </Formik>
       </div>
 
       {/* Credentials */}
@@ -223,16 +227,10 @@ function Students() {
         <div className="bg-green-100 border border-green-300 p-4 rounded shadow">
           <strong className="block mb-2">Login created for student:</strong>
           <p>
-            Username:{" "}
-            <code className="bg-white px-2 py-1 rounded">
-              {createdCredentials.username}
-            </code>
+            Username: <code className="bg-white px-2 py-1 rounded">{createdCredentials.username}</code>
           </p>
           <p>
-            Password:{" "}
-            <code className="bg-white px-2 py-1 rounded">
-              {createdCredentials.password}
-            </code>
+            Password: <code className="bg-white px-2 py-1 rounded">{createdCredentials.password}</code>
           </p>
           <p className="mt-2 text-sm text-red-600">
             ⚠️ Please provide these credentials to the student.
